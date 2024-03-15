@@ -7,8 +7,6 @@ const fetchResult = (async(path, query) =>{
         if(query){queryParams = '?'}
         for(var param in query){
             if(param == 'afterDate'|| param == "beforeDate"){
-                console.log(param)
-                console.log(query[param]);
                 query[param] =  query[param].toISOString()
             }
             queryParams +=param + '=' + query[param]+ '&'
@@ -17,13 +15,11 @@ const fetchResult = (async(path, query) =>{
         headerset = {
             "Authorization": "Bearer " + process.env.FILLOUT_TOKEN
         }
-        console.log(queryParams);
         const res  = await fetch(baseUrl + path + queryParams, { 
             method:"GET",
             headers:headerset
         })
         const results = await res.json();
-        console.log(results);
         return results;
     }
     catch(err){

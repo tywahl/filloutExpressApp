@@ -8,14 +8,7 @@ router.get('/:formId/filteredResponses',validators.validate(filteredResponseVali
 
   try{
     let formId = req.params.formId;
-    console.log(process.env.FILLOUT_TOKEN);
     const result =await filloutController.filterResponse(req.params.formId, req.value.query)
-    console.log(result)
-    //let filterParams = JSON.parse(decodeURIComponent(req.query.filters));
-   // console.log(filterParams);
-   // console.log(formId);
-
-   // console.log(req);
     return res.json(result);
   }
   catch(err){
