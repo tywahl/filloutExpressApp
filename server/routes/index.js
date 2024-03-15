@@ -7,7 +7,7 @@ router.get('/:formId/filteredResponses',validators.validate(filteredResponseVali
 
   try{
     let formId = req.params.formId;
-    console.log(req.value);
+    console.log(process.env.FILLOUT_TOKEN);
     //let filterParams = JSON.parse(decodeURIComponent(req.query.filters));
    // console.log(filterParams);
    // console.log(formId);
