@@ -8,8 +8,8 @@ const filterObject = Joi.object({
 
 const filteredResponseValidatorSchema = Joi.object().keys({
     "limit": Joi.number().optional(),
-    "afterDate": Joi.string().optional(),
-    "beforeDate":Joi.string().optional(),
+    "afterDate": Joi.date().iso().optional(),
+    "beforeDate":Joi.date().iso().optional(),
     "offset":Joi.number().optional(),
     "status":Joi.string().valid("in_progress", "finished").optional(),
     "includeEditLink": Joi.boolean().optional(),
