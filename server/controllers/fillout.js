@@ -30,15 +30,16 @@ const filterResponse = async (responseId,params)=>{
      //console.log(result);
         if(limit  && result.pageCount>1 && result.responses.count<limit){
             params.filters = filters;
-            params.offset = params.offset +1 || 1;
+            params.offset = params.offset;
+            params.limit = limit;
             result = filterResponse(responseId, params);
         }
-        else{
-            result.totalResponses = result.responses.length;
-            result.pageCount = Math.ceil(result.responses.length/limit) || 1;
-            result.responses = result.responses.slice(0, limit);
-        }
+       
     }
+    console.log('limit' + limit);console.log('offset:'+offset);
+    result.totalResponses = result.responses.length;
+    result.pageCount = Math.ceil(result.responses.length/limit) || 1;
+    result.responses = result.responses.slice(offset-1, offset+limit);
     return result;
 }
 

@@ -6,6 +6,11 @@ const fetchResult = (async(path, query) =>{
         let queryParams = '';
         if(query){queryParams = '?'}
         for(var param in query){
+            if(param == 'afterDate'|| param == "beforeDate"){
+                console.log(param)
+                console.log(query[param]);
+                query[param] =  query[param].toISOString()
+            }
             queryParams +=param + '=' + query[param]+ '&'
         }
         queryParams = queryParams.substring(0, queryParams.length-1);
