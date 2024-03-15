@@ -28,12 +28,22 @@ const filterResponse = async (responseId,params)=>{
             params.filters = filters;
             params.offset = params.offset;
             params.limit = limit;
-            result = filterResponse(responseId, params);
+            result = await filterResponse(responseId, params);
         }
     }
     result.totalResponses = result.responses.length;
     result.pageCount = Math.ceil(result.responses.length/limit) || 1;
-    result.responses = result.responses.slice(offset-1, offset+limit);
+    if(limit || offset){
+        let sliceEnd = result.totalResponses;
+        if(limit && offset){
+            sliceEnd = limit + offset
+        }
+        else if(limit){
+              sliceEnd = limit
+        }
+        let sliceStart = offset ?? 0;
+        result.responses = result.responses.slice(sliceStart, sliceEnd);
+    }
     return result;
 }
 
