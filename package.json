@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node --env-file=.env ./server/bin/www",
+    "start-dev": "node --env-file=.env ./server/bin/www",
+    "start" : "node ./server/bin/www",
     "test": "jest --coverage --verbose --runInBand --testEnvironment=node"
   },
   "dependencies": {
