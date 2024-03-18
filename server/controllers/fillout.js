@@ -48,6 +48,7 @@ const filterResponse = async (responseId,params)=>{
 
 const filterResults = (async(result, filters)=>{
     let tempResult = result;
+    console.log(result);
     for(var filter in filters){
         switch(filters[filter].condition){
             case 'equals':
