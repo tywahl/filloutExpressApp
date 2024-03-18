@@ -21,6 +21,11 @@ const filterResponse = async (responseId,params)=>{
     }
     let path = formsPath + responseId + submissionsPath;
     let result = await filloutAdapter.fetchResult(path,value);
+    if(result.error){
+        console.error(result);
+        let errorResponse = {message:"Error Retrieving Data", status:400}
+        throw  new Error(errorResponse); 
+    }
     if(filters.length>0){
         result =  await filterResults(result, filters);
         if(limit  && result.pageCount>1 && result.responses.count<limit){
@@ -48,7 +53,6 @@ const filterResponse = async (responseId,params)=>{
 
 const filterResults = (async(result, filters)=>{
     let tempResult = result;
-    console.log(result);
     for(var filter in filters){
         switch(filters[filter].condition){
             case 'equals':
