@@ -3,13 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node --env-file=.env ./server/bin/www"
+    "start": "node --env-file=.env ./server/bin/www",
+    "test": "jest --coverage --verbose --runInBand --testEnvironment=node"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "jest": "^29.7.0",
     "joi": "^17.12.2",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "supertest": "^6.3.4"
   }
 }

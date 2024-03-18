@@ -1,4 +1,4 @@
-const filloutAdapter = require('../adapters/fillout')
+const filloutAdapter = require('../adapters/filloutAdapter')
 const {filloutApiSchema} = require('../middleware/schemas')
 const formsPath = '/api/forms/'
 const submissionsPath = '/submissions';
@@ -17,11 +17,10 @@ const filterResponse = async (responseId,params)=>{
     if(error){
         console.error(error)
         let errorResponse = {message:"validation Error", error:error.details[0].message, status:400}
-        return errorResponse;
+        throw  new Error(errorResponse);
     }
     let path = formsPath + responseId + submissionsPath;
     let result = await filloutAdapter.fetchResult(path,value);
-   
     if(filters.length>0){
         result =  await filterResults(result, filters);
         if(limit  && result.pageCount>1 && result.responses.count<limit){
@@ -47,9 +46,7 @@ const filterResponse = async (responseId,params)=>{
     return result;
 }
 
-
 const filterResults = (async(result, filters)=>{
-
     let tempResult = result;
     for(var filter in filters){
         switch(filters[filter].condition){
@@ -61,6 +58,9 @@ const filterResults = (async(result, filters)=>{
                 break;
             case 'less_than':
                 tempResult.responses = tempResult.responses.filter((response)=>response.questions.some( (question)=>question.id == filters[filter].id &&  filterLessThanQuestionVal(filters[filter], question)))
+                break;
+            case 'does_not_equal':
+                tempResult.responses = tempResult.responses.filter((response)=>response.questions.some((question)=>question.id == filters[filter].id &&  filterDoesNotEqualQuestionVal(filters[filter], question)))
                 break;
         }
     }
@@ -89,7 +89,17 @@ const filterLessThanQuestionVal=((filter,question )=>{
         question.value = new Date(question.value);
         filter.value = new Date(filter.value);
     }
-    return question.value < filter.value
+    let result = question.value < filter.value;
+    return result
+})
+
+const filterDoesNotEqualQuestionVal=((filter,question )=>{
+    if(question.type=="DatePicker" || question.type=="DateTimePicker"){
+        question.value = new Date(question.value);
+    }
+    let result = question.value != filter.value;
+    return result
+
 })
 
 module.exports={
